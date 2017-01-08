@@ -50,64 +50,63 @@ my $perltidyrc = <<'EOF';
 EOF
 
 sub before_build {
-	my $self = shift;
+    my $self = shift;
 
-	file('tidyall.ini')->spew($self->_tidyall_ini_content);
+    file('tidyall.ini')->spew($self->_tidyall_ini_content);
 
-	$self->_maybe_write_file('perltidyrc', $perltidyrc);
+    $self->_maybe_write_file('perltidyrc', $perltidyrc);
 
-	return;
+    return;
 }
 
 sub _tidyall_ini_content {
-	my $self = shift;
+    my $self = shift;
 
-	return $self->_new_tidyall_ini
-		unless -e 'tidyall.ini';
+    return $self->_new_tidyall_ini
+        unless -e 'tidyall.ini';
 
-	return $self->_munged_tidyall_ini;
+    return $self->_munged_tidyall_ini;
 }
 
 sub _new_tidyall_ini {
-	my $self = shift;
+    my $self = shift;
 
-	my $perl_select = '**/*.{pl,pm,t,psgi}';
-	my %tidyall     = (
-		'PerlTidy' => {
-			select => [$perl_select],
-			ignore => [$self->_default_perl_ignore],
-		},
-		'Test::Vars' => {
-			select => ['**/*.pm'],
-			ignore => [$self->_default_perl_ignore],
-		},
-	);
+    my $perl_select = '**/*.{pl,pm,t,psgi}';
+    my %tidyall     = (
+        'PerlTidy' => {
+            select => [$perl_select],
+            ignore => [$self->_default_perl_ignore],
+        },
+        'Test::Vars' => {
+            select => ['**/*.pm'],
+            ignore => [$self->_default_perl_ignore],
+        },
+    );
 
-	return $self->_config_to_ini(\%tidyall);
+    return $self->_config_to_ini(\%tidyall);
 }
 
 sub _munged_tidyall_ini {
-	my $self = shift;
+    my $self = shift;
 
-	my $tidyall = Code::TidyAll::Config::INI::Reader->read_file('tidyall.ini');
+    my $tidyall = Code::TidyAll::Config::INI::Reader->read_file('tidyall.ini');
 
-	my %has_default_ignore = map { $_ => 1 } qw( PerlTidy Test::Vars );
-	for my $section (grep { $has_default_ignore{$_} } sort keys %{$tidyall}) {
-		$tidyall->{$section}{ignore} = [
-			uniqstr(
-				@{$tidyall->{$section}{ignore}},
-				$self->_default_perl_ignore,
-			)
-		];
-	}
+    my %has_default_ignore = map { $_ => 1 } qw( PerlTidy Test::Vars );
+    for my $section (grep { $has_default_ignore{$_} } sort keys %{$tidyall}) {
+        $tidyall->{$section}{ignore} = [
+            uniqstr(
+                @{$tidyall->{$section}{ignore}},
+                $self->_default_perl_ignore,
+            )];
+    }
 
-	return $self->_config_to_ini($tidyall);
+    return $self->_config_to_ini($tidyall);
 }
 
 sub _default_perl_ignore {
-	my $self = shift;
+    my $self = shift;
 
-	my @ignore = qw(
+    my @ignore = qw(
         .build/**/*
         blib/**/*
         t/00-*
@@ -117,72 +116,71 @@ sub _default_perl_ignore {
         xt/**/*
     );
 
-	my $dist = $self->zilla->name;
-	push @ignore, "$dist-*/**/*";
+    my $dist = $self->zilla->name;
+    push @ignore, "$dist-*/**/*";
 
-	return @ignore;
+    return @ignore;
 }
 
 sub _config_to_ini {
-	my $self    = shift;
-	my $tidyall = shift;
+    my $self    = shift;
+    my $tidyall = shift;
 
-	my @xt_files = Path::Iterator::Rule->new->file->name(qr/\.t$/)->all('xt');
+    my @xt_files = Path::Iterator::Rule->new->file->name(qr/\.t$/)->all('xt');
 
-	if (@xt_files) {
-		my $suffix = 'non-auto-generated xt';
-		for my $plugin (qw( PerlTidy )) {
-			$tidyall->{$plugin . q{ } . $suffix}{select} = \@xt_files;
-		}
-	}
+    if (@xt_files) {
+        my $suffix = 'non-auto-generated xt';
+        for my $plugin (qw( PerlTidy )) {
+            $tidyall->{$plugin . q{ } . $suffix}{select} = \@xt_files;
+        }
+    }
 
-	for my $section (keys %{$tidyall}) {
-		if ($section =~ /PerlTidy/) {
-			$tidyall->{$section}{argv} = '--profile=$ROOT/perltidyrc';
-		}
-	}
+    for my $section (keys %{$tidyall}) {
+        if ($section =~ /PerlTidy/) {
+            $tidyall->{$section}{argv} = '--profile=$ROOT/perltidyrc';
+        }
+    }
 
-	my $sorter = sbe(
-		['select', 'ignore'],
-		{
-			fallback => sub { $_[0] cmp $_[1] },
-		},
-	);
+    my $sorter = sbe(
+        ['select', 'ignore'],
+        {
+            fallback => sub { $_[0] cmp $_[1] },
+        },
+    );
 
-	my $ini = q{};
-	for my $section (sort keys %{$tidyall}) {
-		$ini .= "[$section]\n";
+    my $ini = q{};
+    for my $section (sort keys %{$tidyall}) {
+        $ini .= "[$section]\n";
 
-		for my $key ($sorter->(keys %{$tidyall->{$section}})) {
-			for my $val (
-				sort ref $tidyall->{$section}{$key}
-				? @{$tidyall->{$section}{$key}}
-				: $tidyall->{$section}{$key}
-				)
-			{
+        for my $key ($sorter->(keys %{$tidyall->{$section}})) {
+            for my $val (
+                sort ref $tidyall->{$section}{$key}
+                ? @{$tidyall->{$section}{$key}}
+                : $tidyall->{$section}{$key})
+            {
 
-				$ini .= "$key = $val\n";
-			}
-		}
+                $ini .= "$key = $val\n";
+            }
+        }
 
-		$ini .= "\n";
-	}
+        $ini .= "\n";
+    }
 
-	chomp $ini;
+    chomp $ini;
 
-	return $ini;
+    return $ini;
 }
 
 sub _maybe_write_file {
-	my $self    = shift;
-	my $file    = shift;
-	my $content = shift;
+    my $self    = shift;
+    my $file    = shift;
+    my $content = shift;
 
-	return if -e $file;
+    return if -e $file;
 
-	file($file)->spew($content);
+    file($file)->spew($content);
 
-	return;
+    return;
 }
 
 __PACKAGE__->meta->make_immutable;
