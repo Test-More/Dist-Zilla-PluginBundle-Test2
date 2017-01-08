@@ -102,7 +102,6 @@ on 'develop' => sub {
   requires "IO::Handle" => "0";
   requires "IPC::Open3" => "0";
   requires "Parallel::ForkManager" => "1.19";
-  requires "Perl::Critic" => "1.126";
   requires "Perl::Tidy" => "20160302";
   requires "Pod::Coverage::TrustPod" => "0";
   requires "Pod::Wordlist" => "0";

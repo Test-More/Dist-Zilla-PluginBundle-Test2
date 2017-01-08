@@ -80,7 +80,6 @@ This is more or less equivalent to the following `dist.ini`:
     skip = ...
 
     [CopyFilesFromBuild]
-    copy = Build.PL
     copy = CONTRIBUTING.md
     copy = LICENSE
     copy = Makefile.PL
@@ -89,8 +88,6 @@ This is more or less equivalent to the following `dist.ini`:
     copy = ppport.h
 
     [GitHub::Meta]
-    ; Configured by setting use_github_issues for the bundle
-    bugs = 0
     ; Configured by setting use_github_homepage for the bundle
     homepage = 0
 
@@ -129,7 +126,6 @@ This is more or less equivalent to the following `dist.ini`:
     -type  = requires
     Code::TidyAll::Plugin::Test::Vars = 0.02
     Parallel::ForkManager'            = 1.19
-    Perl::Critic                      = 1.126
     Perl::Tidy                        = 20160302
     Test::Vars                        = 0.009
 
@@ -218,12 +214,11 @@ This is more or less equivalent to the following `dist.ini`:
 
     [Git::CheckFor::MergeConflicts]
 
-    ; Generates/updates tidyall.ini, perlcriticrc, and perltidyrc
+    ; Generates/updates tidyall.ini and perltidyrc
     [Test2::TidyAll]
 
     ; The allow_dirty list is basically all of the generated or munged files
     ; in the distro, including:
-    ;     Build.PL
     ;     CONTRIBUTING.md
     ;     Changes
     ;     LICENSE
@@ -247,6 +242,8 @@ This is more or less equivalent to the following `dist.ini`:
     commit_msg        = Bump version after release
 
 # SUPPORT
+
+Bugs may be submitted through [https://github.com/Test-More/Dist-Zilla-PluginBundle-Test2/issues](https://github.com/Test-More/Dist-Zilla-PluginBundle-Test2/issues).
 
 Join us on IRC at [$distmeta-](https://metacpan.org/pod/$distmeta-){resources}{x\_IRC}> for more help.
 

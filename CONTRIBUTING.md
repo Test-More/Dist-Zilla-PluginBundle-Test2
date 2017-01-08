@@ -82,7 +82,7 @@ Once installed, here are some dzil commands you might try:
 
 You can learn more about Dist::Zilla at http://dzil.org/.
 
-The code for this distribution is [hosted at GitHub](https://github.com/Dist-Zilla-PluginBundle-Test2).
+The code for this distribution is [hosted at GitHub](https://github.com/Test-More/Dist-Zilla-PluginBundle-Test2).
 
 You can submit code changes by forking the repository, pushing your code
 changes to your clone, and then submitting a pull request. Detailed
@@ -91,7 +91,7 @@ instructions for doing that is available here:
 https://help.github.com/articles/creating-a-pull-request
 
 If you have found a bug, but do not have an accompanying patch to fix it, you
-can submit an issue report [via the web](WARNING: bugtracker data not set!)
+can submit an issue report [via the web](https://github.com/Test-More/Dist-Zilla-PluginBundle-Test2/issues)
 ).
 
 This distribution also has an IRC channel at
