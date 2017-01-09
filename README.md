@@ -243,7 +243,7 @@ This is more or less equivalent to the following `dist.ini`:
 
 # SUPPORT
 
-Bugs may be submitted through [https://github.com/Test-More/Dist-Zilla-PluginBundle-Test2/issues](https://github.com/Test-More/Dist-Zilla-PluginBundle-Test2/issues).
+Bugs may be submitted at [https://github.com/Test-More/Dist-Zilla-PluginBundle-Test2/issues](https://github.com/Test-More/Dist-Zilla-PluginBundle-Test2/issues).
 
 Join us on IRC at [irc://irc.perl.org/#perl-qa](irc://irc.perl.org/#perl-qa) for more help.
 
@@ -251,7 +251,7 @@ We also have a Slack team that can be joined by anyone with an `@cpan.org` email
 
 # SOURCE
 
-The source code repository for Test2-Suite can be found at [https://github.com/Test-More/Dist-Zilla-PluginBundle-Test2](https://github.com/Test-More/Dist-Zilla-PluginBundle-Test2).
+The source code repository for Dist-Zilla-PluginBundle-Test2 can be found at [https://github.com/Test-More/Dist-Zilla-PluginBundle-Test2](https://github.com/Test-More/Dist-Zilla-PluginBundle-Test2).
 
 # AUTHOR
 
