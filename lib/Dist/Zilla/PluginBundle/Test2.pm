@@ -329,7 +329,7 @@ sub _basic_plugins {
         CheckVersionIncrement
         TestRelease
         ConfirmRelease
-        UploadToCPAN
+        FakeRelease
         VersionFromMainModule
     );
 }
