@@ -45,20 +45,12 @@ sub configure {
 
     ## no critic (Subroutines::ProhibitCallsToUnexportedSubs)
     my $podweaver_plugin = ${peek_sub(\&Dist::Zilla::Plugin::PodWeaver::weaver)->{'$self'}};
+    my $zilla            = $podweaver_plugin->zilla;
 
-    my $zilla = $podweaver_plugin->zilla;
-    my $bundle_prefix;
-    for my $name (map { $_->plugin_name } @{$zilla->plugins}) {
-
-        # We want a plugin that was added by our bundle.
-        next unless ($bundle_prefix) = $name =~ m{^(.+)/};
-        last;
-    }
-
-    my $license_plugin = $zilla->plugin_named($bundle_prefix . '/License');
+    my $license_plugin = $zilla->plugin_named('@' . $self->_prefix . '/License');
     my $license_filename = $license_plugin ? $license_plugin->filename : 'LICENSE';
 
-    my @config = (
+    my @weaver_config = (
         '@CorePrep',
         ['-SingleEncoding' => {encoding => 'UTF-8'}],
         ['-Transformer' => List     => {transformer => 'List'}],
@@ -76,28 +68,7 @@ sub configure {
         ['Collect' => 'TYPES' => {command => 'type'}],
         'Leftovers',
         ['Region' => 'postlude'],
-        [
-            'GenerateSection' => 'generate SUPPORT' => {
-                title            => 'SUPPORT',
-                main_module_only => 0,
-                text             => [
-                    <<'SUPPORT',
-{{ join("\n\n",
-    ($bugtracker_email && $bugtracker_email =~ /rt\.cpan\.org/)
-    ? "Bugs may be submitted through L<the RT bug tracker|$bugtracker_web>\n(or L<$bugtracker_email|mailto:$bugtracker_email>)."
-    : $bugtracker_web
-    ? "Bugs may be submitted through L<$bugtracker_web>."
-    : (),
-
-    $distmeta->{resources}{x_MailingList} ? 'There is a mailing list available for users of this distribution,' . "\nL<mailto:" . $distmeta->{resources}{x_MailingList} . '>.' : (),
-
-   "Join us on IRC at L<$distmeta->{resources}{x_IRC}> for more help.",
-   'We also have a Slack team that can be joined by anyone with an C<@cpan.org> email address L<https://perl-test2.slack.com/> If you do not have an C<@cpan.org> email you can ask for a Slack invite by emailing Chad Granum E<lt>exodist@cpan.orgE<gt>.',
-) }}
-SUPPORT
-                ],
-            },
-        ],
+        [$self->_support_section],
         [
             'AllowOverride' => 'allow override SUPPORT' => {
                 header_re      => '^(SUPPORT|BUGS)\b',
@@ -105,16 +76,10 @@ SUPPORT
                 match_anywhere => 0,
             },
         ],
-        [
-            'GenerateSection' => 'generate SOURCE' => {
-                title            => 'SOURCE',
-                main_module_only => 0,
-                text             => ['The source code repository for Test2-Suite can be found at L<{{ $distmeta->{resources}{repository}{web} }}>.'],
-            },
-        ],
+        [$self->_source_section],
     );
 
-    push @config, (
+    push @weaver_config, (
         'Authors',
         ['Contributors' => {':version' => '0.008'}],
         [
@@ -127,7 +92,54 @@ SUPPORT
         ['Region' => 'footer'],
     );
 
-    return @config;
+    return @weaver_config;
+}
+
+sub _support_section {
+    my $self = shift;
+
+    my $template = <<'SUPPORT';
+{{
+join "\n\n", ((
+          $bugtracker_email ? "Bugs may be submitted at L<$bugtracker_web> or via email to L<$bugtracker_email|mailto:$bugtracker_email>."
+        : $bugtracker_web   ? "Bugs may be submitted at L<$bugtracker_web>."
+        : (),
+    ),
+    (
+        $distmeta->{resources}{x_MailingList}
+        ? 'There is a mailing list available for users of this distribution,' . "\nL<mailto:" . $distmeta->{resources}{x_MailingList} . '>.'
+        : (),
+    ),
+    'Join us on IRC at L<{{ $distmeta->{resources}{x_IRC} }}> for more help.',
+    'We also have a Slack team that can be joined by anyone with an C<@cpan.org> email address L<https://perl-test2.slack.com/> If you do not have an C<@cpan.org> email you can ask for a Slack invite by emailing Chad Granum E<lt>exodist@cpan.orgE<gt>.',
+    )
+}}
+SUPPORT
+
+    return (
+        'GenerateSection' => 'generate SUPPORT' => {
+            title            => 'SUPPORT',
+            main_module_only => 0,
+            text             => [$template],
+        },
+    );
+}
+
+sub _source_section {
+    my $self = shift;
+
+    my $template = <<'SOURCE';
+The source code repository for {{ $name }} can be found at L<{{ $repository_web }}>.
+SOURCE
+
+    return (
+        'GenerateSection' => 'generate SOURCE' => {
+            title            => 'SOURCE',
+            main_module_only => 0,
+            is_template      => 1,
+            text             => [$template],
+        },
+    );
 }
 
 sub mvp_bundle_config {
