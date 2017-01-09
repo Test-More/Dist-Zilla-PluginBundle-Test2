@@ -31,6 +31,7 @@ use Dist::Zilla::Plugin::Git::GatherDir;
 use Dist::Zilla::Plugin::Git::Tag;
 use Dist::Zilla::Plugin::InstallGuide;
 use Dist::Zilla::Plugin::Meta::Contributors;
+use Dist::Zilla::Plugin::Meta::Maintainers;
 use Dist::Zilla::Plugin::MetaConfig;
 use Dist::Zilla::Plugin::MetaJSON;
 use Dist::Zilla::Plugin::MetaProvides::Package;
@@ -70,6 +71,16 @@ has dist => (
     is       => 'ro',
     isa      => 'Str',
     required => 1,
+);
+
+has maintainer => (
+    traits  => ['Array'],
+    is      => 'ro',
+    isa     => 'ArrayRef[Str]',
+    default => sub { [] },
+    handles => {
+        '_has_maintainers' => 'count',
+    },
 );
 
 has authority => (
@@ -415,6 +426,7 @@ sub _meta_plugins {
             MetaJSON
             MetaYAML
             ),
+        ($self->_has_maintainers ? ['Meta::Maintainers' => {maintainer => $self->maintainer}] : ()),
     );
 }
 
@@ -799,6 +811,8 @@ This is more or less equivalent to the following F<dist.ini>:
     meta_noindex = 1
 
     [Meta::Contributors]
+    ; Configured by setting 1+ maintainer options for bundle
+    [Meta::Maintainers]
     [Meta::Config]
     [MetaJSON]
     [MetaYAML]

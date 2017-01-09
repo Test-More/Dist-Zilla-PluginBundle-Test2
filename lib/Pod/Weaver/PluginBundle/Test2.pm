@@ -83,6 +83,7 @@ sub configure {
     );
 
     push @weaver_config, (
+        [$self->_maintainers_section],
         'Authors',
         ['Contributors' => {':version' => '0.008'}],
         [
@@ -138,6 +139,30 @@ SOURCE
     return (
         'GenerateSection' => 'generate SOURCE' => {
             title            => 'SOURCE',
+            main_module_only => 0,
+            is_template      => 1,
+            text             => [$template],
+        },
+    );
+}
+
+sub _maintainers_section {
+    my $self = shift;
+
+    # I'm not sure why all the "|| []" is needed but without it this template
+    # does not produce any output.
+    my $template = <<'MAINT';
+{{
+join "\n\n",
+    $distmeta->{x_maintainers} && @{$distmeta->{x_maintainers} || []}
+    ? @{$distmeta->{x_maintainers} || []}
+    : @{$distmeta->{author} || []}
+}}
+MAINT
+
+    return (
+        'GenerateSection' => 'generate MAINTAINERS' => {
+            title            => 'MAINTAINERS',
             main_module_only => 0,
             is_template      => 1,
             text             => [$template],
