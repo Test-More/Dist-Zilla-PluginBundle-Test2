@@ -245,7 +245,13 @@ This is more or less equivalent to the following `dist.ini`:
 
 Bugs may be submitted through [https://github.com/Test-More/Dist-Zilla-PluginBundle-Test2/issues](https://github.com/Test-More/Dist-Zilla-PluginBundle-Test2/issues).
 
-Join us on IRC at [$distmeta-](https://metacpan.org/pod/$distmeta-){resources}{x\_IRC}> for more help.
+Join us on IRC at [irc://irc.perl.org/#perl-qa](irc://irc.perl.org/#perl-qa) for more help.
+
+We also have a Slack team that can be joined by anyone with an `@cpan.org` email address [https://perl-test2.slack.com/](https://perl-test2.slack.com/) If you do not have an `@cpan.org` email you can ask for a Slack invite by emailing Chad Granum <exodist@cpan.org>.
+
+# SOURCE
+
+The source code repository for Test2-Suite can be found at [https://github.com/Test-More/Dist-Zilla-PluginBundle-Test2](https://github.com/Test-More/Dist-Zilla-PluginBundle-Test2).
 
 # AUTHOR
 

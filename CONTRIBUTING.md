@@ -94,8 +94,11 @@ If you have found a bug, but do not have an accompanying patch to fix it, you
 can submit an issue report [via the web](https://github.com/Test-More/Dist-Zilla-PluginBundle-Test2/issues)
 ).
 
+
 This distribution also has an IRC channel at
 irc://irc.perl.org/#perl-qa
+
+We also have a Slack team that can be joined by anyone with an `@cpan.org` email address [https://perl-test2.slack.com/] If you do not have an `@cpan.org` email you can ask for a Slack invite by emailing Chad Granum [exodist@cpan.org](mailto:exodist@cpan.org).
 
 
 ## Tidyall

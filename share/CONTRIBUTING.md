@@ -108,11 +108,12 @@ can submit an issue report [via the web]({{ $dist->distmeta->{resources}{bugtrac
 {{ $dist->distmeta->{resources}{bugtracker}{mailto} ? 'or [via email](' . $dist->distmeta->{resources}{bugtracker}{mailto} : ')' }}.
 {{
 my $extra = $dist->distmeta->{resources}{x_MailingList}
-    ? "\n" . 'There is a mailing list available for users of this distribution,' . "\n" . $dist->distmeta->{resources}{x_MailingList}
+    ? "\n\n" . 'There is a mailing list available for users of this distribution,' . "\n" . $dist->distmeta->{resources}{x_MailingList}
     : '';
 $extra .= $dist->distmeta->{resources}{x_IRC}
-    ? "\n" . 'This distribution also has an IRC channel at' . "\n" . $dist->distmeta->{resources}{x_IRC}
+    ? "\n\n" . 'This distribution also has an IRC channel at' . "\n" . $dist->distmeta->{resources}{x_IRC}
     : '';
+$extra .= "\n\n" . 'We also have a Slack team that can be joined by anyone with an `@cpan.org` email address [https://perl-test2.slack.com/] If you do not have an `@cpan.org` email you can ask for a Slack invite by emailing Chad Granum [exodist@cpan.org](mailto:exodist@cpan.org).';
 # send questions to the bugtracker if nowhere better
 $extra ||= 'This is a good place to send your questions about the usage of this distribution.';
 }}
