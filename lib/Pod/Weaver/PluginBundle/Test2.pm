@@ -110,7 +110,7 @@ join "\n\n", ((
         ? 'There is a mailing list available for users of this distribution,' . "\nL<mailto:" . $distmeta->{resources}{x_MailingList} . '>.'
         : (),
     ),
-    'Join us on IRC at L<{{ $distmeta->{resources}{x_IRC} }}> for more help.',
+    "Join us on IRC at L<$distmeta->{resources}{x_IRC}> for more help.",
     'We also have a Slack team that can be joined by anyone with an C<@cpan.org> email address L<https://perl-test2.slack.com/> If you do not have an C<@cpan.org> email you can ask for a Slack invite by emailing Chad Granum E<lt>exodist@cpan.orgE<gt>.',
     )
 }}
