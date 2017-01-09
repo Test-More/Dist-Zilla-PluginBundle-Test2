@@ -21,7 +21,7 @@ use Dist::Zilla::Plugin::CheckSelfDependency;
 use Dist::Zilla::Plugin::CheckStrictVersion;
 use Dist::Zilla::Plugin::CheckVersionIncrement;
 use Dist::Zilla::Plugin::CopyFilesFromBuild;
-use Dist::Zilla::Plugin::EnsureChangesHasContent;
+use Dist::Zilla::Plugin::EnsureChangesHasContent 0.02;
 use Dist::Zilla::Plugin::GenerateFile::FromShareDir 0.013;
 use Dist::Zilla::Plugin::Git::Check;
 use Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts;
@@ -57,7 +57,7 @@ use Dist::Zilla::Plugin::Test::Synopsis;
 use Dist::Zilla::Plugin::Test::TidyAll 0.04;
 use Dist::Zilla::Plugin::Test::Version;
 use Dist::Zilla::Plugin::Test2::TidyAll;
-use Dist::Zilla::Plugin::VersionFromMainModule;
+use Dist::Zilla::Plugin::VersionFromMainModule 0.02;
 use Path::Iterator::Rule;
 
 use Moose;
